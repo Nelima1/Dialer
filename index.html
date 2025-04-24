@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>iOS Dialer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    body, html {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .dialer-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      padding: 0;
+    }
+
+    .status-bar {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .dialed-number {
+      font-size: 28px;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 600;
+      min-height: 40px;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+      justify-items: center;
+    }
+
+    .key {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #efefef;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .key small {
+      font-size: 12px;
+      font-weight: normal;
+      color: gray;
+    }
+
+    .call-button {
+      grid-column: 2 / span 1;
+      width: 80px;
+      height: 80px;
+      background-color: #34C759;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .call-button img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      border-top: 1px solid #ddd;
+      font-size: 12px;
+    }
+
+    .bottom-nav div {
+      color: #999;
+    }
+
+    .bottom-nav .active {
+      color: #007AFF;
+      font-weight: 600;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="dialer-container">
+    <div class="status-bar">
+      <span class="time">09:31</span>
+      <span class="battery">7%</span>
+    </div>
+
+    <div class="dialed-number" id="dialed-number"></div>
+
+    <div class="keypad">
+      <div class="key" onclick="addNumber('1')"><span>1</span></div>
+      <div class="key" onclick="addNumber('2')"><span>2</span><small>ABC</small></div>
+      <div class="key" onclick="addNumber('3')"><span>3</span><small>DEF</small></div>
+      <div class="key" onclick="addNumber('4')"><span>4</span><small>GHI</small></div>
+      <div class="key" onclick="addNumber('5')"><span>5</span><small>JKL</small></div>
+      <div class="key" onclick="addNumber('6')"><span>6</span><small>MNO</small></div>
+      <div class="key" onclick="addNumber('7')"><span>7</span><small>PQRS</small></div>
+      <div class="key" onclick="addNumber('8')"><span>8</span><small>TUV</small></div>
+      <div class="key" onclick="addNumber('9')"><span>9</span><small>WXYZ</small></div>
+      <div class="key" onclick="addNumber('*')"><span>*</span></div>
+      <div class="key" onclick="addNumber('0')"><span>0</span><small>+</small></div>
+      <div class="key" onclick="addNumber('#')"><span>#</span></div>
+
+      <div class="call-button" onclick="triggerCall()">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png"/>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div>Favourites</div>
+      <div>Recents</div>
+      <div>Contacts</div>
+      <div class="active">Keypad</div>
+      <div>Voicemail</div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <p>USSD code dialing...</p>
+    </div>
+  </div>
+
+  <script>
+    let number = '';
+
+    function addNumber(num) {
+      number += num;
+      document.getElementById('dialed-number').textContent = number;
+    }
+
+    function triggerCall() {
+      setTimeout(() => {
+        document.getElementById('modal').style.display = 'flex';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
